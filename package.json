@@ -10,7 +10,9 @@
     "mime": "1.2.7",
     "connect-assets": "*",
     "coffee-script": ">= 1.4.x",
-    "jade": "*"
+    "jade": "*",
+    "passport": "*",
+    "passport-github": "*"
   },
   "devDependencies": {},
   "scripts": {

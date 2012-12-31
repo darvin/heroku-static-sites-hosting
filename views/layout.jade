@@ -16,7 +16,7 @@ html
               - each val, key in obj             
                 li
                   a(href='#{key}') #{val}
-          a.btn-auth.btn-github.pull-right(href="#") Login with <b>GitHub</b>
+          a.btn-auth.btn-github.pull-right(href="/github-login") Login with <b>GitHub</b>
     div.container
       block content
       include inc/footer
