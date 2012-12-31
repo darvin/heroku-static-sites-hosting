@@ -10,17 +10,13 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a(href='#').brand Something
+          a(href='#').brand Static Site Hosting
           ul.nav
-            - var obj = { 'home':'Home', 'about':'About' }
-              - each val, key in obj
-                - if (key == key)
-                  li.active
-                    a(href='#{key}') #{val}
-                - else            
-                  li
-                    a(href='#{key}') #{val}
-
+            - var obj = {'/':'New site', '/list':'Your sites', 'https://github.com/darvin/heroku-static-sites-hosting':'View on GitHub' }
+              - each val, key in obj             
+                li
+                  a(href='#{key}') #{val}
+          a.btn-auth.btn-github.pull-right(href="#") Login with <b>GitHub</b>
     div.container
       block content
       include inc/footer
