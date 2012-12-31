@@ -4,7 +4,7 @@ mongoose = require 'mongoose'
 MONGO_URL = process.env.MONGOLAB_URI or 'mongodb://localhost/static-host' 
 PORT = process.env.PORT or 3000
 SITE_ADDRESS = process.env.URL or "http://localhost:#{PORT}/"
-
+console.error "MONGO": MONGO_URL
 require('zappajs') PORT, disable_io:true, ->
   mongoose.connect MONGO_URL
   
