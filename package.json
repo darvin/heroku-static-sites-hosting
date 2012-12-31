@@ -1,0 +1,27 @@
+{
+  "name": "heroku-static-hosting",
+  "version": "0.0.1",
+  "description": "Host your static files on heroku for free :) Great for generated documentation!",
+  "main": "server.coffee",
+  "dependencies": {
+    "zappajs": "*",
+    "adm-zip":"git://github.com/JoshuaGross/adm-zip.git",
+    "mongoose": "*",
+    "mime": "*"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:darvin/heroku-static-hosting.git"
+  },
+  "keywords": [
+    "heroku",
+    "static",
+    "hosting"
+  ],
+  "author": "Sergey Klimov <sergey.v.klimov@gmail.com>",
+  "license": "MIT"
+}
