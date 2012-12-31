@@ -1,10 +1,11 @@
 fs = require 'fs'
 {Site} = require './models'
 mongoose = require 'mongoose'
-SITE_ADDRESS = process.env.URL or "http://localhost:3000/"
 MONGO_URL = process.env.MONGOLAB_URI or 'mongodb://localhost/static-host' 
 PORT = process.env.PORT or 3000
-require('zappajs'), PORT ->
+SITE_ADDRESS = process.env.URL or "http://localhost:#{PORT}/"
+
+require('zappajs') PORT, ->
   console.error SITE_ADDRESS
   mongoose.connect MONGO_URL
   
