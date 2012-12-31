@@ -1,3 +1,22 @@
-div.hero-unit
-  h1 Here
-  p Welcome to here
+extends layout
+block head
+  title New static site
+
+block content
+  div.hero-unit
+    h1 New static site
+    p
+      form.form-horizontal(method='post', action='/publish', enctype='multipart/form-data')
+        div.control-group
+          label.control-label(for='inputName') Site Name
+          div.controls
+            input#inputName.span5(type='text',placeholder='Name',name="site_name")
+        div.control-group
+          label.control-label(for='inputArchive') Archive
+          div.controls
+            input#inputArchive.span5(type='file',placeholder='Zip file',name="archive")
+        div.control-group
+          div.controls
+            button.btn.btn-primary.btn-large(type='submit') Upload!
+    p Or you can do that from command line:  
+      pre cat docs.zip | curl -F "site_name=somenamename" -F "archive=@-" #{siteUrl}publish/

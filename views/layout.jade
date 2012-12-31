@@ -10,18 +10,19 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a(href='#').brand #{brand}
+          a(href='#').brand Something
           ul.nav
             - var obj = { 'home':'Home', 'about':'About' }
               - each val, key in obj
-                - if (id == key)
+                - if (key == key)
                   li.active
                     a(href='#{key}') #{val}
                 - else            
                   li
                     a(href='#{key}') #{val}
 
-    div.container!= body
+    div.container
+      block content
       include inc/footer
 
     include inc/scripts
