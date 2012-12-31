@@ -7,7 +7,8 @@
     "zappajs": "*",
     "adm-zip":"git://github.com/JoshuaGross/adm-zip.git",
     "mongoose": "*",
-    "mime": "*"
+    "mime": "*",
+    "coffee-script": ">= 1.4.x"
   },
   "devDependencies": {},
   "scripts": {
