@@ -1,0 +1,23 @@
+extends layout
+block head
+  title List of your sites
+
+block content
+  div.hero-unit
+    h1 Your sites
+    p
+      table.table.table-striped.table-hover
+        thead
+          tr
+            th Name
+            th Users
+            th
+        tbody
+          each site in sites
+            tr 
+              td #{site._id}
+              td
+                each user in site.users
+                  a(href="http://github.com/#{user}") #{user} 
+              td 
+                a.btn(href="/#{sitesPrefix}#{site._id}/") View

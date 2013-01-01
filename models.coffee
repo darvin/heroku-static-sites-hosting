@@ -12,7 +12,8 @@ AdmZip = require 'adm-zip'
 # Site model
 Site = new mongoose.Schema(
   _id: String,
-  prefix: String
+  prefix: String,
+  users: [String]
 )
 
 # File model
@@ -37,7 +38,7 @@ File.statics.createFromZipEntry = (zipEntry) ->
 Site.methods.fileModel = () ->
   mongoose.model "File", File, "files-#{this._id}"
 
-Site.statics.upload = (name, filename, callback) ->
+Site.statics.upload = (name, filename, users, callback) ->
   zip = new AdmZip filename
   zipEntries = zip.getEntries()
   prefix = null
@@ -45,7 +46,7 @@ Site.statics.upload = (name, filename, callback) ->
     if not prefix? or entry.entryName.length<prefix.length
       prefix = entry.entryName
 
-  this.findOneAndUpdate {_id:name}, {prefix:prefix}, {upsert:true}, (err,site) ->
+  this.findOneAndUpdate {_id:name}, {prefix:prefix, users:users}, {upsert:true}, (err,site) ->
     if err
       console.error err
       callback (err)
@@ -57,9 +58,14 @@ Site.statics.upload = (name, filename, callback) ->
         fileModel.createFromZipEntry(zipEntry)
             
     callback(err, site)
-  
-Site.statics.fileForSiteWithPath = (siteName, filepath, callback) ->
-  this.findOne {_id:siteName}, (err, site) ->
+
+Site.statics.sitesForUser = (username, callback) ->
+  this.find {users:username}, callback  
+
+Site.statics.fileForSiteWithPathForUser = (siteName, filepath, username, callback) ->
+  cond = {_id:siteName,$or:[{users:[]}, {users:username}]}
+  console.error cond
+  this.findOne cond, (err, site) ->
     if err?
       return callback err
     else if not site?

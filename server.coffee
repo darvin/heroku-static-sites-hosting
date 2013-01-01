@@ -70,10 +70,11 @@ app.configure 'production', () ->
 ensureAuthenticated  = (req, res, next) ->
   if (req.isAuthenticated())
     return next()
-  res.redirect '/github-login'
+  res.redirect '/auth/github'
 
 
 app.get '/',  routes.home
+app.get '/list', ensureAuthenticated, routes.list
 app.get "/sites/:siteName/*", ensureAuthenticated, routes.siteFile
 app.post '/publish', routes.publish
     

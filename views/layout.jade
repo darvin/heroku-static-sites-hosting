@@ -12,10 +12,14 @@ html
             span.icon-bar
           a(href='#').brand Static Site Hosting
           ul.nav
-            - var obj = {'/':'New site', '/list':'Your sites', 'https://github.com/darvin/heroku-static-sites-hosting':'View on GitHub' }
-              - each val, key in obj             
-                li
-                  a(href='#{key}') #{val}
+            li
+              a(href='/') New Site
+            if user
+              li
+                a(href='/list') Your sites
+            li
+              a(href='http://github.com/darvin/heroku-static-sites-hosting') View on GitHub
+
           if !user
             a.btn-auth.btn-github.pull-right(href="/auth/github") Login with <b>GitHub</b>
           else

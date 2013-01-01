@@ -4,16 +4,21 @@
 
 module.exports =
   home: (req, res, next)->
-    console.error req.user
     res.render "home" 
-    
+  
+  list: (req, res, next)->
+    Site.sitesForUser req.user.username, (err, sites) ->
+      if err
+        return next(err)
+      console.error sites
+      res.render "list", {sites:sites}   
   
   siteFile: (req, res, next) ->
     siteName = req.params.siteName
     path = req.url.replace "/#{res.locals.sitesPrefix}#{siteName}/", ""
     if path.length==0
       path = "index.html"
-    Site.fileForSiteWithPath siteName, path, (err, file) =>
+    Site.fileForSiteWithPathForUser siteName, path, req.user.username, (err, file) =>
       if err? or not file?
         res.send 404
       else
@@ -25,8 +30,19 @@ module.exports =
     path = req.files.archive.path
     type = req.files.archive.type
     siteName = req.body.siteName.replace " ", "-"
-    Site.upload siteName, path, () =>
+
+    users = (user for user in req.body.users.split /[\s|,]+/ when user.length>0)
+    
+    if req.body.onlyMe? 
+      if not req.user?
+        return res.redirect "/auth/github"
+      users = [req.user.username]
+    else if req.user?
+      users.push req.user.username
+
+
+
+    Site.upload siteName, path, users, () =>
       res.render "uploaded", {
-          newSiteUrl:"#{res.locals.baseUrl}#{res.locals.sitesPrefix}#{siteName}/"
           siteName:siteName
       }
