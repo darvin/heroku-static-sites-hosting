@@ -4,6 +4,7 @@
 
 module.exports =
   home: (req, res, next)->
+    console.error req.user
     res.render "home" 
     
   

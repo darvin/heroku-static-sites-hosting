@@ -8,16 +8,15 @@ passport = require('passport')
 util = require('util')
 GitHubStrategy = require('passport-github').Strategy
 
-GITHUB_CLIENT_ID = "f15ae9632df15da60546"
-GITHUB_CLIENT_SECRET = "c85b88930ba046f4b91dd1d5f025cefd7287527a"
-
 
 MONGO_URL = process.env.MONGOLAB_URI or 'mongodb://localhost/static-host' 
 PORT = process.env.PORT or 3000
 SITE_ADDRESS = process.env.URL or "http://localhost:#{PORT}/"
 console.error "MONGO": MONGO_URL
 
-
+GITHUB_CLIENT_ID = "f15ae9632df15da60546"
+GITHUB_CLIENT_SECRET = "c85b88930ba046f4b91dd1d5f025cefd7287527a"
+GITHUB_CALLBACK_URL = "#{SITE_ADDRESS}auth/github/callback"
 mongoose.connect MONGO_URL
 
 app = module.exports = express()
@@ -35,11 +34,10 @@ passport.deserializeUser (obj, done) ->
 passport.use(new GitHubStrategy({
     clientID: GITHUB_CLIENT_ID,
     clientSecret: GITHUB_CLIENT_SECRET,
-    callbackURL: "#{SITE_ADDRESS}/github-callback"
+    callbackURL: GITHUB_CALLBACK_URL
   },
   (accessToken, refreshToken, profile, done)  ->
     process.nextTick () ->
-      
       done(null, profile)
 ))
 
@@ -51,13 +49,14 @@ app.configure () ->
   app.use express.methodOverride()
   app.use express.cookieParser()
   app.use express.session({ secret: 'your secret here' })
-  app.use (req,res,next) ->
-    res.locals.siteUrl = SITE_ADDRESS
-    res.locals.sitesPrefix = "sites/"
-    next()
   app.use passport.initialize()
   app.use passport.session()
 
+  app.use (req,res,next) ->
+    res.locals.siteUrl = SITE_ADDRESS
+    res.locals.sitesPrefix = "sites/"
+    res.locals.user = req.user
+    next()
   app.use app.router 
   app.use express.static(__dirname + '/public')
 
@@ -74,14 +73,14 @@ ensureAuthenticated  = (req, res, next) ->
   res.redirect '/github-login'
 
 
-app.get '/', routes.home
+app.get '/',  routes.home
     
 app.get "/sites/:siteName/*", ensureAuthenticated, routes.siteFile
 
-app.post '/publish', ensureAuthenticated, routes.publish
+app.post '/publish', routes.publish
     
-app.get '/github-login', passport.authenticate('github')
-app.get '/github-callback', passport.authenticate 'github', { failureRedirect: '/' }
+app.get '/auth/github', passport.authenticate('github')
+app.get '/auth/github/callback', passport.authenticate('github', {failureRedirect:"/?login-error",successRedirect:"/"})
  
 
 app.get '/logout', (req, res)->
