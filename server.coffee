@@ -53,7 +53,7 @@ app.configure () ->
   app.use passport.session()
 
   app.use (req,res,next) ->
-    res.locals.siteUrl = SITE_ADDRESS
+    res.locals.baseUrl = SITE_ADDRESS
     res.locals.sitesPrefix = "sites/"
     res.locals.user = req.user
     next()
@@ -74,15 +74,11 @@ ensureAuthenticated  = (req, res, next) ->
 
 
 app.get '/',  routes.home
-    
 app.get "/sites/:siteName/*", ensureAuthenticated, routes.siteFile
-
 app.post '/publish', routes.publish
     
 app.get '/auth/github', passport.authenticate('github')
 app.get '/auth/github/callback', passport.authenticate('github', {failureRedirect:"/?login-error",successRedirect:"/"})
- 
-
 app.get '/logout', (req, res)->
   req.logout()
   res.redirect('/')

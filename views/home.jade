@@ -10,7 +10,7 @@ block content
         div.control-group
           label.control-label(for='inputName') Site Name
           div.controls
-            input#inputName.span5(type='text',placeholder='Name',name="site_name")
+            input#inputName.span5(type='text',placeholder='Name',name="siteName")
         div.control-group
           label.control-label(for='inputArchive') Archive
           div.controls
@@ -19,5 +19,5 @@ block content
           div.controls
             button.btn.btn-primary.btn-large(type='submit') Upload!
     p Or you can do that from command line:  
-      pre cat docs.zip | curl -F "site_name=somenamename" -F "archive=@-" #{siteUrl}publish/
+      pre cat docs.zip | curl -F "siteName=somenamename" -F "archive=@-" #{baseUrl}publish/
     p 

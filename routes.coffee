@@ -24,9 +24,9 @@ module.exports =
     filename = req.files.archive.filename
     path = req.files.archive.path
     type = req.files.archive.type
-    site_name = req.body.site_name.replace " ", "-"
-    Site.upload site_name, path, () =>
+    siteName = req.body.siteName.replace " ", "-"
+    Site.upload siteName, path, () =>
       res.render "uploaded", {
-          newSiteUrl:"#{res.locals.siteUrl}#{res.locals.sitesPrefix}#{site_name}/"
-          site_name:site_name
+          newSiteUrl:"#{res.locals.baseUrl}#{res.locals.sitesPrefix}#{siteName}/"
+          siteName:siteName
       }
