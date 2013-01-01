@@ -10,7 +10,6 @@ module.exports =
     Site.sitesForUser req.user.username, (err, sites) ->
       if err
         return next(err)
-      console.error sites
       res.render "list", {sites:sites}   
   
   siteFile: (req, res, next) ->
@@ -31,8 +30,10 @@ module.exports =
     type = req.files.archive.type
     siteName = req.body.siteName.replace " ", "-"
 
-    users = (user for user in req.body.users.split /[\s|,]+/ when user.length>0)
-    
+    if req.body.users?
+      users = (user for user in req.body.users.split /[\s|,]+/ when user.length>0)
+    else
+      users = []
     if req.body.onlyMe? 
       if not req.user?
         return res.redirect "/auth/github"

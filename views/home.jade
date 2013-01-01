@@ -29,7 +29,7 @@ block content
           div.controls
             button.btn.btn-primary.btn-large(type='submit') Upload!
     p Or you can do that from command line:  
-      pre cat docs.zip | curl -F "siteName=YOUR_SITE_NAME" -F "archive=@-" #{baseUrl}publish/
+      pre cat docs.zip | curl -F "siteName=YOUR_SITE_NAME" -F "users=YOUR_GITHUB_USERNAME" -F "archive=@-" #{baseUrl}publish/
     p For public site:
       pre cat docs.zip | curl -F "siteName=YOUR_SITE_NAME" -F "archive=@-" #{baseUrl}publish/
 
